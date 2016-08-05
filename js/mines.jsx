@@ -7,6 +7,13 @@
 
 const Mines = React.createClass({
 
+  getInitialState: function () {
+    return {
+      field: [],
+      gridLock: false
+    }
+  },
+
   getDefaultProps: function () {
     return {
       width: 6,
@@ -35,7 +42,7 @@ const Mines = React.createClass({
 
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
-        field[y][x].neighboursWithBombCount = this.getNeighboursWithBombCount(x, y, field);
+        field[y][x].neighboursWithMineCount = this.getNeighboursWithMineCount(x, y, field);
       }
     }
 
@@ -43,7 +50,7 @@ const Mines = React.createClass({
   },
 
   //GET COUNT OF NEIGHBOURS WITH BOMB
-  getNeighboursWithBombCount: function (x, y, field) {
+  getNeighboursWithMineCount: function (x, y, field) {
     var count = 0;
     if (x - 1 >= 0 && y - 1 >= 0 && field[y - 1][x - 1].mine) count ++;
     if (x - 1 >= 0 && y + 1 < this.props.height && field[y + 1][x - 1].mine) count++;
@@ -61,18 +68,25 @@ const Mines = React.createClass({
   },
 
   handleMineLeftClick: function (event, id) {
+
+    //IF GRID IS LOCKED
+    if (this.state.gridLock) return;
+
     //UPDATE FIELD AND UNCOVER BOX
     var updatedField = this.state.field;
     var y = Math.floor(id / this.props.width), x = id % this.props.width;
     if (!updatedField[y][x].flagged) {
       updatedField[y][x].covered = false;
     }
-    this.setState({ field: updatedField });
+    this.setState({ field: updatedField, lastField: updatedField[y][x] });
   },
 
   handleMineRightClick: function (event, id) {
     //PREVENT CONTEXT MENU FROM APPEARING
     event.preventDefault();
+
+    //LOCK THE GRID
+    if (this.state.gridLock) return;
 
     //UPDATE FIELD AND TOGGLE FLAG
     var updatedField = this.state.field;
@@ -80,14 +94,16 @@ const Mines = React.createClass({
     if (updatedField[y][x].covered) {
       updatedField[y][x].flagged = !updatedField[y][x].flagged;
     }
-    this.setState({ field: updatedField });
+    this.setState({ field: updatedField, lastField: updatedField[y][x] });
   },
 
+  // TODO: <MinesResetButton />
   render: function () {
     return (
       <div className='mines-container'>
-        <MinesCount field={this.state.field} />
+        <h1>MineSweeper ReactJS</h1>
         <MinesGrid field={this.state.field} handleMineLeftClick={this.handleMineLeftClick} handleMineRightClick={this.handleMineRightClick}/>
+        <MinesCount field={this.state.field} />
       </div>
     )
   }
@@ -101,7 +117,7 @@ const Mines = React.createClass({
 
 const MinesCount = React.createClass({
 
-  render: function () {
+  countBombs: function () {
     var bombCount = 0;
     var flagCount = 0;
     this.props.field.map(function (row) {
@@ -110,8 +126,12 @@ const MinesCount = React.createClass({
         if (mine.flagged) flagCount++;
       })
     })
+    return bombCount - flagCount < 0 ? 0 : bombCount - flagCount
+  },
+
+  render: function () {
     return (
-      <div className='mines-count'>{bombCount - flagCount < 0 ? 0 : bombCount - flagCount}</div>
+      <div className='mines-count'>{'Bombs remaining: ' + this.countBombs()}</div>
     )
   }
 
@@ -172,6 +192,8 @@ const MineBox = React.createClass({
       content = <span className='fa fa-flag'></span>
     } else if (!this.props.mine.covered && this.props.mine.mine) {
       content = <span className='fa fa-bomb'></span>
+    } else if (!this.props.mine.covered && this.props.mine.neighboursWithMineCount > 0) {
+      content = this.props.mine.neighboursWithMineCount;
     } else if (!this.props.mine.covered) {
       content = <span className='fa fa-check'></span>
     }

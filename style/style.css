@@ -1,3 +1,13 @@
+body {
+  background-color: #fafafa;
+  font-family: 'Open Sans', sans-serif;
+  text-align: center;
+}
+
+h1 {
+  color: #777;
+}
+
 /*
  *  APP ELEMENTS
  *
@@ -25,6 +35,10 @@
 .mines-grid {
   display: flex;
   flex-direction: column;
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #f3f3f3;
+  border-radius: 4px;
 }
 
 .mines-row {
@@ -32,14 +46,48 @@
 }
 
 .mine-box {
-  width: 80px;
-  height: 80px;
-  line-height: 80px;
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
   text-align: center;
-  background-color: #999;
-  margin: 10px;
+  background-color: #f3f3f3;
+  margin: 8px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0px 2px 0px 0px rgba(0,0,0,0.1);
+  -moz-box-shadow: 0px 2px 0px 0px rgba(0,0,0,0.1);
+  box-shadow: 0px 2px 0px 0px rgba(0,0,0,0.1);
+  border: 1px solid rgba(149, 204, 222, 0.1);
+  transition: all .2s;
+  color: #999;
 }
 
-.mine-box.covered span {
-  display: none;
+.mine-box:hover {
+  transform: translateY(-2px);
+  -webkit-box-shadow: 0px 4px 0px 0px rgba(0,0,0,0.1);
+  -moz-box-shadow: 0px 4px 0px 0px rgba(0,0,0,0.1);
+  box-shadow: 0px 4px 0px 0px rgba(0,0,0,0.1);
+}
+
+.mine-box:active {
+  transform: translateY(2px);
+  -webkit-box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.1);
+  -moz-box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.1);
+  box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.1);
+  /*-webkit-box-shadow: inset 0px 1px 0px 0px rgba(0,0,0,0.15);
+  -moz-box-shadow: inset 0px 1px 0px 0px rgba(0,0,0,0.15);
+  box-shadow: inset 0px 1px 0px 0px rgba(0,0,0,0.15);*/
+}
+
+span.fa.fa-flag {
+  color: #3588f4;
+}
+
+.mines-count {
+  display: inline-block;
+  padding: 8px 12px;
+  margin-top: 10px;
+  background-color: #fff;
+  border: 1px solid #f3f3f3;
+  border-radius: 4px;
+  color: #777;
 }
