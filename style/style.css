@@ -39,3 +39,7 @@
   background-color: #999;
   margin: 10px;
 }
+
+.mine-box.covered span {
+  display: none;
+}
