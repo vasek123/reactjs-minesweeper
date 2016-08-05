@@ -1,0 +1,41 @@
+/*
+ *  APP ELEMENTS
+ *
+ *  #1  =>  #app
+ *  #2  =>  .mines-container
+ *  #3  =>  .mines-count
+ *  #4  =>  .mines-grid
+ *  #5  =>  .mines-row
+ *  #6  =>  .mine-box
+ *
+*/
+
+#app {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mines-container {
+
+}
+
+.mines-grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.mines-row {
+  display: flex;
+}
+
+.mine-box {
+  width: 80px;
+  height: 80px;
+  line-height: 80px;
+  text-align: center;
+  background-color: #999;
+  margin: 10px;
+}
