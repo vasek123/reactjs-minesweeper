@@ -33,7 +33,27 @@ const Mines = React.createClass({
       }
     }
 
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        field[y][x].neighboursWithBombCount = this.getNeighboursWithBombCount(x, y, field);
+      }
+    }
+
     return field;
+  },
+
+  //GET COUNT OF NEIGHBOURS WITH BOMB
+  getNeighboursWithBombCount: function (x, y, field) {
+    var count = 0;
+    if (x - 1 >= 0 && y - 1 >= 0 && field[y - 1][x - 1].mine) count ++;
+    if (x - 1 >= 0 && y + 1 < this.props.height && field[y + 1][x - 1].mine) count++;
+    if (x - 1 >= 0 && field[y][x - 1].mine) count++;
+    if (x + 1 < this.props.width && y + 1 < this.props.height && field[y + 1][x + 1].mine) count++;
+    if (x + 1 < this.props.width && y - 1 >= 0 && field[y - 1][x + 1].mine) count++;
+    if (x + 1 < this.props.width && field[y][x + 1].mine) count++;
+    if (y + 1 < this.props.height && field[y + 1][x].mine) count++;
+    if (y - 1 >= 0 && field[y - 1][x].mine) count++;
+    return count;
   },
 
   componentWillMount: function () {
